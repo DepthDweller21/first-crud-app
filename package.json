@@ -1,0 +1,11 @@
+{
+  "name": "build-crud-app",
+  "version": "1.0.0",
+  "description": "my first crud app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "haris",
+  "license": "ISC"
+}
