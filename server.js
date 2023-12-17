@@ -1,57 +1,59 @@
-const express=require('express')
-const parser=require('body-parser')
-const mongoClient=require('mongodb').MongoClient
-const app=express()
-const connectionString = "mongodb+srv://DepthDweller21:P0YvljIktS2BbbVN@new-crud-app.ebjwiea.mongodb.net/"
-const PORT=8000
+const express = require("express");
+const parser = require("body-parser");
+const mongoClient = require("mongodb").MongoClient;
+const fs = require("fs");
+const app = express();
+let database = {};
+database.connectionString =
+  "mongodb+srv://DepthDweller21:P0YvljIktS2BbbVN@new-crud-app.ebjwiea.mongodb.net/";
+const PORT = 5000;
 
 // not sure what this is but I need it to do something related to json, parsing, urls and APIs, will find out soon enough
 
-app.use(parser.urlencoded({extended:true}))
+app.use(parser.urlencoded({ extended: true }));
 
+// renders everything in the public folder
+
+app.use(express.static("public"));
 // this line of code uses express to launch the site on localhost PORT as shown in the variable section
 
-app.listen(PORT,function(){
-    console.log(`server is live Mr.Duck on port: ${PORT}, please visit the project on localhost:${PORT}`)
-})
+app.listen(PORT, function () {
+  console.log(
+    `server is live Mr.Duck on port: ${PORT}, please visit the project on localhost:${PORT}`
+  );
+});
 
 //connecting to database
-async function runDatabase(){
-    try{
-        const client= await mongoClient.connect(connectionString)
-        console.log('Connected to Database Mr.Duck')
-        const db =client.db('crud-app')
-        quotesCollection=db.collection('quotes')
-    }catch(err){
-        console.error(err)
-    }
+async function runDatabase() {
+  console.log(`running database`);
+  try {
+    const client = await mongoClient.connect(database.connectionString);
+    console.log("Connected to Database Mr.Duck");
+    database.quotesCollection = client.db("crud-app").collection("quotes");
+  } catch (err) {
+    console.log(err);
+  }
 }
-runDatabase()
+runDatabase();
+/* all this till now was the application initialisation
+this line of code listens on path /quotes which the HTML responds on*/
 
-// all this till now was the application initialisation
+app.post("/addQuotes", async (req, res) => {
+  try {
+    await database.quotesCollection.insertOne(req.body);
+    res.redirect("/");
+  } catch (err) {
+    console.error(err);
+  }
+});
 
+app.get("/getQuotes", async (req, res) => {
+  let search = req.query.searchName.toLowerCase();
+  let quotesCollection = await database.quotesCollection.find().toArray();
 
-//here I listen for get requests for any files I might need to send from the server to the client
+  let searchResult = quotesCollection.filter((element) =>element.name == search ? true : false);
 
-app.get('/',function(req,res){
-    res.sendFile(__dirname+'/index.html')
-})
-
-//this line of code listens on path /quotes which the HTML responds on
-
-app.post('/quotes', async (req, res) => {
-    try{
-        const result = await quotesCollection.insertOne(req.body)
-        res.redirect('/')
-    }catch(err){
-        console.error(err)
-    }
-
-})
-
-
-
-
-
+  res.json(searchResult);
+});
 
 //P0YvljIktS2BbbVN
