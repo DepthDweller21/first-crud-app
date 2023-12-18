@@ -9,7 +9,7 @@ database.connectionString =
 const PORT = 5000;
 
 // not sure what this is but I need it to do something related to json, parsing, urls and APIs, will find out soon enough
-path.join(__dirname, 'views');//no clue S said so
+
 app.use(parser.urlencoded({ extended: true }));
 
 // renders everything in the public folder
