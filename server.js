@@ -27,14 +27,6 @@ async function runDatabase() {
     console.log(err);
   }
 }
-runDatabase().then(
-// this line of code uses express to launch the site on localhost PORT as shown in the variable section
-
-app.listen(process.env.PORT ||PORT, function () {
-  console.log(
-    `server is live Mr.Duck on port: ${PORT}, please visit the project on localhost:${PORT}`
-  );
-}));
 
 /* all this till now was the application initialisation
 this line of code listens on path /quotes which the HTML responds on*/
@@ -58,3 +50,12 @@ app.get("/getQuotes", async (req, res) => {
 });
 
 //P0YvljIktS2BbbVN
+
+// this line of code uses express to launch the site on localhost PORT as shown in the variable section
+
+
+runDatabase().then(app.listen(process.env.PORT ||PORT, function () {
+  console.log(
+    `server is live Mr.Duck on port: ${PORT}, please visit the project on localhost:${PORT}`
+  );
+}));
