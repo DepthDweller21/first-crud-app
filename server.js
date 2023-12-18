@@ -54,8 +54,9 @@ app.get("/getQuotes", async (req, res) => {
 // this line of code uses express to launch the site on localhost PORT as shown in the variable section
 
 
-runDatabase().then(app.listen(process.env.PORT ||PORT, function () {
+runDatabase().then(()=>{
+  app.listen(process.env.PORT ||PORT, function () {
   console.log(
     `server is live Mr.Duck on port: ${PORT}, please visit the project on localhost:${PORT}`
   );
-}));
+})});
