@@ -17,7 +17,7 @@ app.use(parser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 // this line of code uses express to launch the site on localhost PORT as shown in the variable section
 
-app.listen(PORT, function () {
+app.listen(process.env.PORT ||PORT, function () {
   console.log(
     `server is live Mr.Duck on port: ${PORT}, please visit the project on localhost:${PORT}`
   );
